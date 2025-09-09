@@ -13,10 +13,10 @@
     <link href="style.css" rel="stylesheet">
 
     <!-- Font Awesome-->
-    <script src="https://kit.fontawesome.com/14273d579a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<body class="bg-light pt-5">
+<body class="pt-5">
     <header class="header">
 
         <div class="text-white row gy-5">
@@ -47,32 +47,46 @@
         </div>
     </header>
 
-    <main class="bg-light">
-        <section class="section-filter d-flex gap-5 my-3 me-5">
-            <select class="form-select border border-light rounded-3" aria-label="Default select example">
-                <option selected>Ingrédients</option>
-                <option value="1">Jus de Citron</option>
-                <option value="2">Glaçons</option>
-                <option value="3">Crème de Coco</option>
-                <option value="4">Poivron rouge</option>
-                <option value="5">Poulet</option>
-                <option value="6">Thon en miettes</option>
-                <option value="7">Tomate</option>
-            </select>
+    <main>
+        <section id="section-tri" class="d-flex gap-5 mx-5">
+            <div class="dropdown mb-3 my-3 rounded-3 bg-light">
+                <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span>Ingrédients</span>
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu p-3 w-100">
+                    <input type="text" class="form-control mb-2" id="search-ingredients"
+                        placeholder="Rechercher un ingrédient...">
+                    <ul id="list-ingredients" class="list-unstyled mb-0"></ul>
+                </div>
+            </div>
 
-            <select class="form-select border border-light" aria-label="Default select example">
-                <option selected>Appareils</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
+            <div class="dropdown mb-3 my-3 rounded-3 bg-light">
+                <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span>Appareils</span>
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu p-3 w-100">
+                    <input type="text" class="form-control mb-2" id="search-appareils"
+                        placeholder="Rechercher un appareil...">
+                    <ul id="list-appareils" class="list-unstyled mb-0"></ul>
+                </div>
+            </div>
 
-            <select class="form-select border border-light" aria-label="Default select example">
-                <option selected>Ustensiles</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
+            <div class="dropdown mb-3 my-3 rounded-3 bg-light">
+                <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span>Ustensiles</span>
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu p-3 w-100">
+                    <input type="text" class="form-control mb-2" id="search-ustensiles"
+                        placeholder="Rechercher un ustensile...">
+                    <ul id="list-ustensiles" class="list-unstyled mb-0"></ul>
+                </div>
+            </div>
         </section>
     </main>
     <footer>
@@ -82,6 +96,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+    <script src="recipes.js"></script>
+
+    <script src="index.js"></script>
 </body>
 
 </html>
