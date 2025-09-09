@@ -48,45 +48,59 @@
     </header>
 
     <main>
-        <section id="section-tri" class="d-flex gap-5 mx-5">
-            <div class="dropdown mb-3 my-3 rounded-3 bg-light">
+        <section id="section-tri" class="d-flex gap-5 mx-5 my-3">
+            <div class="dropdown mb-3 rounded-3 bg-light">
                 <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <span>Ingrédients</span>
                     <i class="bi bi-chevron-down"></i>
                 </button>
                 <div class="dropdown-menu p-3 w-100">
-                    <input type="text" class="form-control mb-2" id="search-ingredients"
-                        placeholder="Rechercher un ingrédient...">
-                    <ul id="list-ingredients" class="list-unstyled mb-0"></ul>
+                    <div class="position-relative">
+                        <input type="text" class="form-control mb-2 pe-5" id="search-ingredients"
+                            placeholder="Rechercher un ingrédient...">
+                        <i
+                            class="bi bi-search text-secondary position-absolute top-50 end-0 translate-middle-y me-3"></i>
+                    </div>
+                    <ul id="list-ingredients" class="list-unstyled mb-0 overflow-auto"></ul>
                 </div>
             </div>
 
-            <div class="dropdown mb-3 my-3 rounded-3 bg-light">
+            <div class="dropdown mb-3 rounded-3 bg-light">
                 <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <span>Appareils</span>
                     <i class="bi bi-chevron-down"></i>
                 </button>
                 <div class="dropdown-menu p-3 w-100">
-                    <input type="text" class="form-control mb-2" id="search-appareils"
-                        placeholder="Rechercher un appareil...">
-                    <ul id="list-appareils" class="list-unstyled mb-0"></ul>
+                    <div class="position-relative">
+                        <input type="text" class="form-control mb-2 pe-5" id="search-ingredients"
+                            placeholder="Rechercher un apprareil...">
+                        <i
+                            class="bi bi-search text-secondary position-absolute top-50 end-0 translate-middle-y me-3"></i>
+                    </div>
+                    <ul id="list-appareils" class="list-unstyled mb-0 overflow-auto"></ul>
                 </div>
             </div>
 
-            <div class="dropdown mb-3 my-3 rounded-3 bg-light">
+            <div class="dropdown mb-3 rounded-3 bg-light">
                 <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <span>Ustensiles</span>
                     <i class="bi bi-chevron-down"></i>
                 </button>
                 <div class="dropdown-menu p-3 w-100">
-                    <input type="text" class="form-control mb-2" id="search-ustensiles"
-                        placeholder="Rechercher un ustensile...">
-                    <ul id="list-ustensiles" class="list-unstyled mb-0"></ul>
+                    <div class="position-relative">
+                        <input type="text" class="form-control mb-2 pe-5" id="search-ingredients"
+                            placeholder="Rechercher un ustensile...">
+                        <i
+                            class="bi bi-search text-secondary position-absolute top-50 end-0 translate-middle-y me-3"></i>
+                    </div>
+                    <ul id="list-ustensiles" class="list-unstyled mb-0 overflow-auto"></ul>
                 </div>
             </div>
+
+            <p class="fw-bold ms-auto my-2">1500 recettes</p>
         </section>
     </main>
     <footer>

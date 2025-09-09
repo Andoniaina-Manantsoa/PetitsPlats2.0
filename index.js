@@ -56,3 +56,5 @@ function filtrerListe(inputId, listId, data) {
 filtrerListe("search-ingredients", "list-ingredients", ingredients);
 filtrerListe("search-appareils", "list-appareils", appareils);
 filtrerListe("search-ustensiles", "list-ustensiles", ustensiles);
+
+//Affichages des recettes

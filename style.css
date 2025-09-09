@@ -29,3 +29,9 @@ header.header {
     position: relative;
     height: 50px;
 }
+
+/* Quand on survole un élément de la liste */
+#section-tri .dropdown-menu li:hover {
+    background-color: #e7c151;
+    cursor: pointer;
+}
