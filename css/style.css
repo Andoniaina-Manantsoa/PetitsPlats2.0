@@ -4,7 +4,7 @@ body {
 }
 
 header.header {
-    background-image: url('lampos-aritonang-24gR_9lCdes-unsplash 1.png');
+    background-image: url('../images/lampos-aritonang-24gR_9lCdes-unsplash\ 1.png');
     background-size: cover;
     /* couvre tout le header */
     background-position: center;
