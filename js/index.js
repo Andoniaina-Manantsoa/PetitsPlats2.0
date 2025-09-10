@@ -41,6 +41,38 @@ remplirListe(document.getElementById("list-ingredients"), ingredients);
 remplirListe(document.getElementById("list-appareils"), appareils);
 remplirListe(document.getElementById("list-ustensiles"), ustensiles);
 
+//--------Filtrer les recettes----------
+// Gestion de filtre des recttes 
+function filtrerRecettesPar(type, valeur) {
+    valeur = valeur.toLowerCase();
+    return recipes.filter(r => {
+        if (type === "ingredients") {
+            return r.ingredients.some(i => i.ingredient.toLowerCase() === valeur);
+        } else if (type === "appareils") {
+            return r.appliance.toLowerCase() === valeur;
+        } else if (type === "ustensiles") {
+            return r.ustensils.some(u => u.toLowerCase() === valeur);
+        }
+    });
+}
+
+//Evenement pour chaque listes
+function activerFiltre(listId, type) {
+    const list = document.getElementById(listId);
+    list.addEventListener("click", (e) => {
+        if (e.target && e.target.nodeName === "LI") {
+            const valeur = e.target.textContent;
+            const recettesFiltrees = filtrerRecettesPar(type, valeur);
+            afficherRecettes(recettesFiltrees);
+        }
+    });
+}
+
+// Activer le filtrage pour chaque tri
+activerFiltre("list-ingredients", "ingredients");
+activerFiltre("list-appareils", "appareils");
+activerFiltre("list-ustensiles", "ustensiles");
+
 // Fonction de recherche interne 
 function filtrerListe(inputId, listId, data) {
     const input = document.getElementById(inputId);
@@ -58,3 +90,103 @@ filtrerListe("search-appareils", "list-appareils", appareils);
 filtrerListe("search-ustensiles", "list-ustensiles", ustensiles);
 
 //Affichages des recettes
+const container = document.getElementById("recipes-container");
+
+function afficherRecettes(data) {
+    container.innerHTML = ""; // On vide avant d'afficher
+
+    data.forEach(recette => {
+        // Colonne Bootstrap
+        const col = document.createElement("div");
+        col.className = "col-md-4";
+
+        // Carte
+        const card = document.createElement("div");
+        card.className = "card shadow-sm h-100 rounded-3 my-5";
+
+        // Conteneur pour image + badge temps
+        const imgWrapper = document.createElement("div");
+        imgWrapper.className = "position-relative";
+
+        // Image
+        const img = document.createElement("img");
+        img.src = `./images/${recette.image}`;
+        img.alt = recette.name;
+        img.className = "card-img-top img-fluid";
+        img.style = "height: 250px; wight:380px; object-fit: cover";
+
+        // Temps
+        const time = document.createElement("span");
+        time.className = "badge bg-warning text-dark position-absolute top-0 end-0 m-2";
+        time.innerHTML = `${recette.time} min`;
+
+        // Corps de carte
+        const cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+
+        // Titre
+        const title = document.createElement("h5");
+        title.className = "card-title fw-bold py-3";
+        title.textContent = recette.name;
+
+        // Sous-titre Description
+        const descTitle = document.createElement("h6");
+        descTitle.className = "fw-bold mt-3 text-secondary";
+        descTitle.textContent = "RECETTE";
+
+        // Description
+        const desc = document.createElement("p");
+        desc.className = "card-text";
+        desc.textContent = recette.description;
+
+        // Sous-titre Ingrédients
+        const ingTitle = document.createElement("h6");
+        ingTitle.className = "fw-bold py-3 text-secondary";
+        ingTitle.textContent = "INGREDIENTS";
+
+        // Liste ingrédients
+        const ul = document.createElement("ul");
+        ul.className = "list-unstyled mb-3 row row-cols-2";
+
+        recette.ingredients.forEach(ing => {
+            const li = document.createElement("li");
+            li.className = "my-2";
+
+            // Nom de l'ingrédient
+            const nom = document.createElement("div");
+            nom.textContent = ing.ingredient;
+
+            li.appendChild(nom);
+
+            // Quantité et unité
+            if (ing.quantity) {
+                const quantite = document.createElement("small"); // petit texte en dessous
+                quantite.textContent = ing.quantity + (ing.unit ? ` ${ing.unit}` : "");
+                quantite.className = "text-muted d-block"; // d-block pour forcer sur une ligne
+                li.appendChild(quantite);
+            }
+
+            ul.appendChild(li);
+        });
+
+        // Assemblage
+        cardBody.appendChild(title);
+        cardBody.appendChild(time);
+
+        cardBody.appendChild(descTitle);
+        cardBody.appendChild(desc);
+
+        cardBody.appendChild(ingTitle);
+        cardBody.appendChild(ul);
+
+        card.appendChild(img);
+        card.appendChild(cardBody);
+
+        col.appendChild(card);
+        container.appendChild(col);
+    });
+}
+
+// Afficher toutes les recettes au chargement
+afficherRecettes(recipes);
+
