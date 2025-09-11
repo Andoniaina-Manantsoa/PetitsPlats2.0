@@ -25,7 +25,6 @@ recipes.forEach(recipe => {
 });
 ustensiles = [...new Set(ustensiles)];
 
-
 // Fonction pour remplir une liste 
 function remplirListe(listElement, items) {
     listElement.innerHTML = ""; items.forEach(item => {
@@ -41,7 +40,7 @@ remplirListe(document.getElementById("list-ingredients"), ingredients);
 remplirListe(document.getElementById("list-appareils"), appareils);
 remplirListe(document.getElementById("list-ustensiles"), ustensiles);
 
-//--------Filtrer les recettes----------
+//--------Filtrer les recettes----------//
 // Gestion de filtre des recttes 
 function filtrerRecettesPar(type, valeur) {
     valeur = valeur.toLowerCase();
@@ -84,10 +83,29 @@ function filtrerListe(inputId, listId, data) {
         remplirListe(list, filtres);
     });
 }
+
 // Activer la recherche dans chaque tri 
 filtrerListe("search-ingredients", "list-ingredients", ingredients);
 filtrerListe("search-appareils", "list-appareils", appareils);
 filtrerListe("search-ustensiles", "list-ustensiles", ustensiles);
+
+// Réinitialiser quand on clique en dehors des dropdowns
+document.addEventListener("click", (e) => {
+    const dropdowns = document.querySelectorAll(".dropdown-menu, .dropdown button");
+
+    // Vérifie si le clic est dans un dropdown
+    let insideDropdown = false;
+    dropdowns.forEach(d => {
+        if (d.contains(e.target)) {
+            insideDropdown = true;
+        }
+    });
+
+    // Si on clique en dehors => réaffiche toutes les recettes
+    if (!insideDropdown) {
+        afficherRecettes(recipes);
+    }
+});
 
 //Affichages des recettes
 const container = document.getElementById("recipes-container");
