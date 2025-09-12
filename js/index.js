@@ -111,10 +111,22 @@ function displayRecipes(data) {
         col.appendChild(card);
         container.appendChild(col);
     });
+    // Mise à jour du compteur
+    updateNbRecipes(data.length);
 }
 
 // Afficher toutes les recettes au chargement
 displayRecipes(recipes);
+
+//Fonction mise à jour nombre de recettes dans le résultat de la recherche ou du filtrage.
+function updateNbRecipes(count) {
+    const nbRecipes = document.getElementById("nbRecipes");
+    if (count > 0) {
+        nbRecipes.textContent = `${count} recette${count > 1 ? "s" : ""}`;
+    } else {
+        nbRecipes.textContent = "Aucune recette trouvée";
+    }
+}
 
 // Fonction pour ajouter un tag visuel
 function addTag(type, valeur) {
