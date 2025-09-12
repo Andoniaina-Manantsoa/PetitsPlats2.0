@@ -1,6 +1,7 @@
 const searchInput = document.getElementById("search-recipes");
 const searchBtn = document.getElementById('search-btn');
 const container = document.getElementById("recipes-container");
+const tagWrapper = document.getElementById("tag-wrapper");
 
 // --- Listes uniques ---
 let ingredients = [];
@@ -18,7 +19,7 @@ appareils = [...new Set(appareils)];
 ustensiles = [...new Set(ustensiles)];
 
 //Affichages des recettes
-function afficherRecettes(data) {
+function displayRecipes(data) {
     container.innerHTML = ""; // On vide avant d'afficher
 
     data.forEach(recette => {
@@ -52,12 +53,12 @@ function afficherRecettes(data) {
 
         // Titre
         const title = document.createElement("h5");
-        title.className = "card-title fw-bold py-3";
+        title.className = "card-title py-3";
         title.textContent = recette.name;
 
         // Sous-titre Description
         const descTitle = document.createElement("h6");
-        descTitle.className = "fw-bold mt-3 text-secondary";
+        descTitle.className = "mt-3 text-secondary";
         descTitle.textContent = "RECETTE";
 
         // Description
@@ -67,7 +68,7 @@ function afficherRecettes(data) {
 
         // Sous-titre Ingrédients
         const ingTitle = document.createElement("h6");
-        ingTitle.className = "fw-bold py-3 text-secondary";
+        ingTitle.className = "py-3 text-secondary";
         ingTitle.textContent = "INGREDIENTS";
 
         // Liste ingrédients
@@ -113,34 +114,35 @@ function afficherRecettes(data) {
 }
 
 // Afficher toutes les recettes au chargement
-afficherRecettes(recipes);
+displayRecipes(recipes);
 
-// Fonction qui effectue la recherche principale
-function lancerRecherche() {
-    const valeur = searchInput.value.toLowerCase().trim();
+// Fonction pour ajouter un tag visuel
+function addTag(type, valeur) {
+    // Vérifie si le tag existe déjà
+    if ([...tagWrapper.children].some(tag => tag.dataset.value === valeur.toLowerCase())) {
+        return;
+    }
 
-    if (valeur.length === 0) { afficherRecettes(recipes); return; }
-    const recettesFiltrees = recipes.filter(r =>
-        r.name.toLowerCase().includes(valeur) || // titre
-        r.description.toLowerCase().includes(valeur) || // description
-        r.ingredients.some(i => i.ingredient.toLowerCase().includes(valeur)) // ingrédients
-    );
+    const tag = document.createElement("span");
+    tag.className = "badge bg-warning text-dark d-flex align-items-center gap-2 p-2";
+    tag.dataset.type = type;
+    tag.dataset.value = valeur.toLowerCase();
+    tag.innerHTML = `
+        ${valeur}
+        <i class="bi bi-x-circle-fill" role="button" style="cursor:pointer;"></i>
+    `;
 
-    afficherRecettes(recettesFiltrees);
+    // Supprimer le tag au clic sur la croix
+    tag.querySelector("i").addEventListener("click", () => {
+        tag.remove();
+        applyFilter(); // Recalcule les recettes sans ce tag
+    });
+
+    tagWrapper.appendChild(tag);
 }
 
-//Clique sur l’icône = lance recherche
-searchBtn.addEventListener("click", lancerRecherche);
-
-//Appuie sur Enter = lance recherche
-searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        lancerRecherche();
-    }
-});
-
-// Fonction pour remplir une liste 
-function remplirListe(listElement, items) {
+// Fonction pour remplir une liste des tris
+function fillList(listElement, items) {
     listElement.innerHTML = ""; items.forEach(item => {
         const li = document.createElement("li");
         li.textContent = item;
@@ -150,9 +152,9 @@ function remplirListe(listElement, items) {
 }
 
 // Remplissage initial 
-remplirListe(document.getElementById("list-ingredients"), ingredients);
-remplirListe(document.getElementById("list-appareils"), appareils);
-remplirListe(document.getElementById("list-ustensiles"), ustensiles);
+fillList(document.getElementById("list-ingredients"), ingredients);
+fillList(document.getElementById("list-appareils"), appareils);
+fillList(document.getElementById("list-ustensiles"), ustensiles);
 
 //--------Filtrer les recettes----------//
 // Gestion de filtre des recttes 
@@ -170,21 +172,47 @@ function filtrerRecettesPar(type, valeur) {
 }
 
 //Evenement pour chaque listes
-function activerFiltre(listId, type) {
+function activeFilter(listId, type) {
     const list = document.getElementById(listId);
     list.addEventListener("click", (e) => {
         if (e.target && e.target.nodeName === "LI") {
             const valeur = e.target.textContent;
-            const recettesFiltrees = filtrerRecettesPar(type, valeur);
-            afficherRecettes(recettesFiltrees);
+
+            // Ajoute un tag visuel
+            addTag(type, valeur);
+
+            // Réapplique les filtres actifs
+            applyFilter();
         }
     });
 }
 
 // Activer le filtrage pour chaque tri
-activerFiltre("list-ingredients", "ingredients");
-activerFiltre("list-appareils", "appareils");
-activerFiltre("list-ustensiles", "ustensiles");
+activeFilter("list-ingredients", "ingredients");
+activeFilter("list-appareils", "appareils");
+activeFilter("list-ustensiles", "ustensiles");
+
+function applyFilter() {
+    let recettesFiltrees = recipes;
+
+    // Pour chaque tag actif, on filtre
+    [...tagWrapper.children].forEach(tag => {
+        const type = tag.dataset.type;
+        const valeur = tag.dataset.value;
+
+        recettesFiltrees = recettesFiltrees.filter(r => {
+            if (type === "ingredients") {
+                return r.ingredients.some(i => i.ingredient.toLowerCase() === valeur);
+            } else if (type === "appareils") {
+                return r.appliance.toLowerCase() === valeur;
+            } else if (type === "ustensiles") {
+                return r.ustensils.some(u => u.toLowerCase() === valeur);
+            }
+        });
+    });
+
+    displayRecipes(recettesFiltrees);
+}
 
 // Fonction de recherche interne 
 function filtrerListe(inputId, listId, data) {
@@ -217,7 +245,7 @@ document.addEventListener("click", (e) => {
 
     // Si on clique en dehors => réaffiche toutes les recettes
     if (!insideDropdown) {
-        afficherRecettes(recipes);
+        displayRecipes(recipes);
     }
 });
 
