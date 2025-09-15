@@ -25,12 +25,11 @@ function displayRecipes(data) {
 
     if (data.length === 0) {
         // Si aucune recette trouvée → afficher un message dans la zone
+        const recherche = searchInput.value.trim(); // récupération du texte tapé
         container.innerHTML = `
             <div class="col-12 text-center py-5">
-                <h3>Aucune recette ne correspond à votre recherche</h3>
-                <p class="text-muted">Essayez un autre ingrédient, mot-clé ou supprimez un filtre.</p>
-            </div>
-        `;
+                <h3>Aucune recette ne ccontient " ${recherche}" vous pouvez chercher «tarte aux pommes », « poisson », etc. </h3>
+            </div>`;
         updateNbRecipes(0);
         return;
     }
@@ -182,19 +181,6 @@ fillList(document.getElementById("list-appareils"), appareils);
 fillList(document.getElementById("list-ustensiles"), ustensiles);
 
 //--------Filtrer les recettes----------//
-// Gestion de filtre des recttes 
-/*function filtrerRecettesPar(type, valeur) {
-    valeur = valeur.toLowerCase();
-    return recipes.filter(r => {
-        if (type === "ingredients") {
-            return r.ingredients.some(i => i.ingredient.toLowerCase() === valeur);
-        } else if (type === "appareils") {
-            return r.appliance.toLowerCase() === valeur;
-        } else if (type === "ustensiles") {
-            return r.ustensils.some(u => u.toLowerCase() === valeur);
-        }
-    });
-}*/
 
 //Evenement pour chaque listes
 function activeFilter(listId, type) {
@@ -220,7 +206,7 @@ activeFilter("list-ustensiles", "ustensiles");
 function applyFilter() {
     let recettesFiltrees = recipes;
 
-    // --- 1. Recherche principale ---
+    // --- Recherche principale ---
     const valeurRecherche = searchInput.value.trim().toLowerCase();
     if (valeurRecherche.length >= 3) {
         recettesFiltrees = recettesFiltrees.filter(r =>
@@ -230,7 +216,7 @@ function applyFilter() {
         );
     }
 
-    // --- 2. Tags actifs ---
+    // --- Tags actifs ---
     [...tagWrapper.children].forEach(tag => {
         const type = tag.dataset.type;
         const valeur = tag.dataset.value;
@@ -246,7 +232,7 @@ function applyFilter() {
         });
     });
 
-    // --- 3. Affichage final ---
+    // --- Affichage final ---
     displayRecipes(recettesFiltrees);
 }
 
