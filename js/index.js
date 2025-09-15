@@ -2,6 +2,7 @@ const searchInput = document.getElementById("search-recipes");
 const searchBtn = document.getElementById('search-btn');
 const container = document.getElementById("recipes-container");
 const tagWrapper = document.getElementById("tag-wrapper");
+const clearBtn = document.getElementById("clear-search");
 
 // --- Listes uniques ---
 let ingredients = [];
@@ -21,6 +22,18 @@ ustensiles = [...new Set(ustensiles)];
 //Affichages des recettes
 function displayRecipes(data) {
     container.innerHTML = ""; // On vide avant d'afficher
+
+    if (data.length === 0) {
+        // Si aucune recette trouvée → afficher un message dans la zone
+        container.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <h3>Aucune recette ne correspond à votre recherche</h3>
+                <p class="text-muted">Essayez un autre ingrédient, mot-clé ou supprimez un filtre.</p>
+            </div>
+        `;
+        updateNbRecipes(0);
+        return;
+    }
 
     data.forEach(recette => {
         // Colonne Bootstrap
@@ -136,12 +149,12 @@ function addTag(type, valeur) {
     }
 
     const tag = document.createElement("span");
-    tag.className = "badge bg-warning text-dark d-flex align-items-center gap-2 p-2";
+    tag.className = "badge bg-warning text-dark d-flex align-items-center gap-4 my-3 p-3";
     tag.dataset.type = type;
     tag.dataset.value = valeur.toLowerCase();
     tag.innerHTML = `
         ${valeur}
-        <i class="bi bi-x-circle-fill" role="button" style="cursor:pointer;"></i>
+        <i class="bi bi-x" role="button" style="cursor:pointer;"></i>
     `;
 
     // Supprimer le tag au clic sur la croix
@@ -207,6 +220,16 @@ activeFilter("list-ustensiles", "ustensiles");
 function applyFilter() {
     let recettesFiltrees = recipes;
 
+    // Recherche principale
+    const valeurRecherche = searchInput.value.trim().toLowerCase();
+    if (valeurRecherche.length >= 3) {
+        recettesFiltrees = recettesFiltrees.filter(r =>
+            r.name.toLowerCase().includes(valeurRecherche) ||
+            r.description.toLowerCase().includes(valeurRecherche) ||
+            r.ingredients.some(i => i.ingredient.toLowerCase().includes(valeurRecherche))
+        );
+    }
+
     // Pour chaque tag actif, on filtre
     [...tagWrapper.children].forEach(tag => {
         const type = tag.dataset.type;
@@ -225,6 +248,24 @@ function applyFilter() {
 
     displayRecipes(recettesFiltrees);
 }
+
+// --- RECHERCHE PRINCIPALE ---
+// Afficher/masquer la croix selon le texte
+searchInput.addEventListener("input", () => {
+    if (searchInput.value.trim().length > 0) {
+        clearBtn.style.display = "inline-flex";
+    } else {
+        clearBtn.style.display = "none";
+    }
+    applyFilter();
+});
+
+// Quand on clique sur la croix → efface et réinitialise
+clearBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    clearBtn.style.display = "none";
+    applyFilter(); // Réaffiche toutes les recettes (ou juste avec tags)
+});
 
 // Fonction de recherche interne 
 function filtrerListe(inputId, listId, data) {

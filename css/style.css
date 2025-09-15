@@ -40,6 +40,7 @@ input,
 #triTitle,
 ul,
 .badge,
-.card-text {
+.card-text,
+#tag-wrapper {
     font-family: 'Manrope', sans-serif;
 }

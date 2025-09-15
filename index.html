@@ -40,7 +40,13 @@
                     <div id="search-bar" class="input-group position-relative">
                         <input type="text" id="search-recipes" class="form-control rounded-start f-Manrope"
                             placeholder="Rechercher une recette, un ingrédient...">
-                        <div id="tag-wrapper" class="d-flex flex-wrap my-2 position-absolute"></div>
+
+                        <!-- Icône croix pour réinitialiser -->
+                        <span id="clear-search" class="input-group-text bg-white text-secondary" role="button"
+                            style="cursor:pointer; display:none;">
+                            <i class="bi bi-x"></i>
+                        </span>
+
                         <span id="search-btn" class="input-group-text text-white bg-dark rounded-end" role="button"
                             tabindex="0" style="cursor:pointer;">
                             <i class="bi bi-search"></i>
@@ -55,7 +61,7 @@
 
     <main class="container my-5">
         <section id="section-tri" class="d-flex gap-5">
-            <div class="dropdown mb-3 rounded-3 bg-light">
+            <div class="dropdown mb-5 rounded-3 bg-light">
                 <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <span id="triTitle">Ingrédients</span>
@@ -70,9 +76,10 @@
                     </div>
                     <ul id="list-ingredients" class="list-unstyled mb-0 overflow-auto"></ul>
                 </div>
+                <div id="tag-wrapper" class="tag w-50 d-flex my-2 position-absolute gap-3 fs-5"></div>
             </div>
 
-            <div class="dropdown mb-3 rounded-3 bg-light">
+            <div class="dropdown mb-5 rounded-3 bg-light">
                 <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <span id="triTitle">Appareils</span>
@@ -89,7 +96,7 @@
                 </div>
             </div>
 
-            <div class="dropdown mb-3 rounded-3 bg-light">
+            <div class="dropdown mb-5 rounded-3 bg-light">
                 <button class="btn d-flex justify-content-between px-2" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <span id="triTitle">Ustensiles</span>
