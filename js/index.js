@@ -42,7 +42,7 @@ function displayRecipes(data) {
 
         // Carte
         const card = document.createElement("div");
-        card.className = "card shadow-sm h-100 rounded-3 my-5";
+        card.className = "card shadow-sm h-100 my-5";
 
         // Conteneur pour image + badge temps
         const imgWrapper = document.createElement("div");
@@ -57,7 +57,7 @@ function displayRecipes(data) {
 
         // Temps
         const time = document.createElement("span");
-        time.className = "badge bg-warning text-dark position-absolute top-0 end-0 m-2";
+        time.className = "badge bg-warning text-dark position-absolute top-0 end-0 m-3 p-2 rounded-pill";
         time.innerHTML = `${recette.time} min`;
 
         // Corps de carte
@@ -183,7 +183,7 @@ fillList(document.getElementById("list-ustensiles"), ustensiles);
 
 //--------Filtrer les recettes----------//
 // Gestion de filtre des recttes 
-function filtrerRecettesPar(type, valeur) {
+/*function filtrerRecettesPar(type, valeur) {
     valeur = valeur.toLowerCase();
     return recipes.filter(r => {
         if (type === "ingredients") {
@@ -194,7 +194,7 @@ function filtrerRecettesPar(type, valeur) {
             return r.ustensils.some(u => u.toLowerCase() === valeur);
         }
     });
-}
+}*/
 
 //Evenement pour chaque listes
 function activeFilter(listId, type) {
@@ -220,7 +220,7 @@ activeFilter("list-ustensiles", "ustensiles");
 function applyFilter() {
     let recettesFiltrees = recipes;
 
-    // Recherche principale
+    // --- 1. Recherche principale ---
     const valeurRecherche = searchInput.value.trim().toLowerCase();
     if (valeurRecherche.length >= 3) {
         recettesFiltrees = recettesFiltrees.filter(r =>
@@ -230,7 +230,7 @@ function applyFilter() {
         );
     }
 
-    // Pour chaque tag actif, on filtre
+    // --- 2. Tags actifs ---
     [...tagWrapper.children].forEach(tag => {
         const type = tag.dataset.type;
         const valeur = tag.dataset.value;
@@ -246,6 +246,7 @@ function applyFilter() {
         });
     });
 
+    // --- 3. Affichage final ---
     displayRecipes(recettesFiltrees);
 }
 
@@ -275,7 +276,7 @@ function filtrerListe(inputId, listId, data) {
         const valeur = input.value.toLowerCase();
         const filtres = data.filter(item =>
             item.includes(valeur));
-        remplirListe(list, filtres);
+        fillList(list, filtres);
     });
 }
 
@@ -296,9 +297,8 @@ document.addEventListener("click", (e) => {
         }
     });
 
-    // Si on clique en dehors => réaffiche toutes les recettes
     if (!insideDropdown) {
-        displayRecipes(recipes);
+        applyFilter(); // garde les filtres actifs
     }
 });
 
