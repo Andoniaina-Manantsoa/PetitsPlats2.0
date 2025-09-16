@@ -52,7 +52,7 @@ function displayRecipes(data) {
         img.src = `./images/${recette.image}`;
         img.alt = recette.name;
         img.className = "card-img-top img-fluid";
-        img.style = "height: 250px; object-fit: cover";
+        img.style = "height: 250px; object-fit: cover; border-radius: 20px 20px 0 0";
 
         // Temps
         const time = document.createElement("span");

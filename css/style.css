@@ -44,3 +44,13 @@ ul,
 #tag-wrapper {
     font-family: 'Manrope', sans-serif;
 }
+
+#list-ingredients,
+#list-appareils,
+#list-ustensiles {
+    max-height: 400px;
+}
+
+.card {
+    border-radius: 20px;
+}
