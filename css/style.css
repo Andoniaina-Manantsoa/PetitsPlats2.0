@@ -44,3 +44,7 @@ ul,
 #tag-wrapper {
     font-family: 'Manrope', sans-serif;
 }
+
+.card {
+    border-radius: 20px;
+}
