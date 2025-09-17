@@ -52,7 +52,6 @@ function displayRecipes(data) {
         img.src = `./images/${recette.image}`;
         img.alt = recette.name;
         img.className = "card-img-top img-fluid";
-        img.style = "height: 250px; object-fit: cover; border-radius: 20px 20px 0 0";
 
         // Temps
         const time = document.createElement("span");
@@ -130,11 +129,11 @@ function displayRecipes(data) {
 // Afficher toutes les recettes au chargement
 displayRecipes(recipes);
 
-//Fonction mise à jour nombre de recettes dans le résultat de la recherche ou du filtrage.
+//Fonction mise à jour nombre de recettes selon le résultat de la recherche ou du filtrage.
 function updateNbRecipes(count) {
     const nbRecipes = document.getElementById("nbRecipes");
     if (count > 0) {
-        nbRecipes.textContent = `${count} recette${count > 1 ? "s" : ""}`;
+        nbRecipes.textContent = `${count} recettes${count > 1 ? "s" : ""}`;
     } else {
         nbRecipes.textContent = "Aucune recette trouvée";
     }
