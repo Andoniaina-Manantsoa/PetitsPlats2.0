@@ -9,21 +9,6 @@ let ingredients = [];
 let appareils = [];
 let ustensiles = [];
 
-// Extraire ingrédients / appareils / ustensiles
-for (let i = 0; i < recipes.length; i++) {
-    let recipe = recipes[i];
-
-    for (let j = 0; j < recipe.ingredients.length; j++) {
-        ingredients.push(recipe.ingredients[j].ingredient.toLowerCase());
-    }
-
-    appareils.push(recipe.appliance.toLowerCase());
-
-    for (let k = 0; k < recipe.ustensils.length; k++) {
-        ustensiles.push(recipe.ustensils[k].toLowerCase());
-    }
-}
-
 // Supprimer doublons
 function removeDuplicates(array) {
     let unique = [];
@@ -40,9 +25,46 @@ function removeDuplicates(array) {
     return unique;
 }
 
-ingredients = removeDuplicates(ingredients);
-appareils = removeDuplicates(appareils);
-ustensiles = removeDuplicates(ustensiles);
+// --- Affichage des filtres ---
+function displayFilters(data) {
+    ingredients = [];
+    appareils = [];
+    ustensiles = [];
+
+    for (let i = 0; i < data.length; i++) {
+        let recipe = data[i];
+
+        for (let j = 0; j < recipe.ingredients.length; j++) {
+            ingredients.push(recipe.ingredients[j].ingredient.toLowerCase());
+        }
+
+        appareils.push(recipe.appliance.toLowerCase());
+
+        for (let k = 0; k < recipe.ustensils.length; k++) {
+            ustensiles.push(recipe.ustensils[k].toLowerCase());
+        }
+    }
+
+    ingredients = removeDuplicates(ingredients);
+    appareils = removeDuplicates(appareils);
+    ustensiles = removeDuplicates(ustensiles);
+
+    fillList(document.getElementById("list-ingredients"), ingredients);
+    fillList(document.getElementById("list-appareils"), appareils);
+    fillList(document.getElementById("list-ustensiles"), ustensiles);
+}
+displayFilters(recipes);
+
+// --- Remplir listes ---
+function fillList(listElement, items) {
+    listElement.innerHTML = "";
+    for (let i = 0; i < items.length; i++) {
+        const li = document.createElement("li");
+        li.textContent = items[i];
+        li.className = "dropdown-item";
+        listElement.appendChild(li);
+    }
+}
 
 // --- Affichage des recettes ---
 function displayRecipes(data) {
@@ -136,17 +158,24 @@ function displayRecipes(data) {
 // --- Compteur ---
 function updateNbRecipes(count) {
     const nbRecipes = document.getElementById("nbRecipes");
-    nbRecipes.textContent = count > 0 ? `${count} recette${count > 1 ? "s" : ""}` : "Aucune recette trouvée";
+    if (count > 0) {
+        nbRecipes.textContent =
+            count + " recette" + (count > 1 ? "s" : "");
+    } else {
+        nbRecipes.textContent = "Aucune recette trouvée";
+    }
 }
 
 // --- Tags ---
 function addTag(type, valeur) {
-    let children = tagWrapper.children;
-    for (let i = 0; i < children.length; i++) {
-        if (children[i].dataset.value === valeur.toLowerCase()) {
-            return;
+    let exists = false;
+    for (let i = 0; i < tagWrapper.children.length; i++) {
+        if (tagWrapper.children[i].dataset.value === valeur.toLowerCase()) {
+            exists = true;
+            break;
         }
     }
+    if (exists) return;
 
     const tag = document.createElement("span");
     tag.className = "badge bg-warning text-dark d-flex align-items-center gap-4 my-3 p-3";
@@ -165,20 +194,9 @@ function addTag(type, valeur) {
     tagWrapper.appendChild(tag);
 }
 
-// --- Remplir listes ---
-function fillList(listElement, items) {
-    listElement.innerHTML = "";
-    for (let i = 0; i < items.length; i++) {
-        const li = document.createElement("li");
-        li.textContent = items[i];
-        li.className = "dropdown-item";
-        listElement.appendChild(li);
-    }
-}
-
-fillList(document.getElementById("list-ingredients"), ingredients);
+/*fillList(document.getElementById("list-ingredients"), ingredients);
 fillList(document.getElementById("list-appareils"), appareils);
-fillList(document.getElementById("list-ustensiles"), ustensiles);
+fillList(document.getElementById("list-ustensiles"), ustensiles);*/
 
 // --- Activer filtres ---
 function activeFilter(listId, type) {
@@ -255,6 +273,7 @@ function applyFilter() {
     }
 
     displayRecipes(recettesFiltrees);
+    displayFilters(recettesFiltrees);
 }
 
 // --- Recherche principale ---
