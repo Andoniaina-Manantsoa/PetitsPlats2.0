@@ -9,15 +9,38 @@ let ingredients = [];
 let appareils = [];
 let ustensiles = [];
 
-recipes.forEach(recipe => {
-    recipe.ingredients.forEach(i => ingredients.push(i.ingredient.toLowerCase()));
-    appareils.push(recipe.appliance.toLowerCase());
-    recipe.ustensils.forEach(u => ustensiles.push(u.toLowerCase()));
-});
+function displayFilters(data) {
+    ingredients = [];
+    appareils = [];
+    ustensiles = [];
 
-ingredients = [...new Set(ingredients)];
-appareils = [...new Set(appareils)];
-ustensiles = [...new Set(ustensiles)];
+    data.forEach(recipe => {
+        recipe.ingredients.forEach(i => ingredients.push(i.ingredient.toLowerCase()));
+        appareils.push(recipe.appliance.toLowerCase());
+        recipe.ustensils.forEach(u => ustensiles.push(u.toLowerCase()));
+    });
+
+    ingredients = [...new Set(ingredients)];
+    appareils = [...new Set(appareils)];
+    ustensiles = [...new Set(ustensiles)];
+
+    // Fonction pour remplir une liste des tris
+    function fillList(listElement, items) {
+        listElement.innerHTML = "";
+        items.forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            li.className = "dropdown-item";
+            listElement.appendChild(li);
+        });
+    }
+
+    // Remplissage initial 
+    fillList(document.getElementById("list-ingredients"), ingredients);
+    fillList(document.getElementById("list-appareils"), appareils);
+    fillList(document.getElementById("list-ustensiles"), ustensiles);
+}
+displayFilters(recipes);
 
 //Affichages des recettes
 function displayRecipes(data) {
@@ -164,21 +187,6 @@ function addTag(type, valeur) {
     tagWrapper.appendChild(tag);
 }
 
-// Fonction pour remplir une liste des tris
-function fillList(listElement, items) {
-    listElement.innerHTML = ""; items.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        li.className = "dropdown-item";
-        listElement.appendChild(li);
-    });
-}
-
-// Remplissage initial 
-fillList(document.getElementById("list-ingredients"), ingredients);
-fillList(document.getElementById("list-appareils"), appareils);
-fillList(document.getElementById("list-ustensiles"), ustensiles);
-
 //--------Filtrer les recettes----------//
 
 //Evenement pour chaque listes
@@ -233,6 +241,7 @@ function applyFilter() {
 
     // --- Affichage final ---
     displayRecipes(recettesFiltrees);
+    displayFilters(recettesFiltrees);
 }
 
 // --- RECHERCHE PRINCIPALE ---
